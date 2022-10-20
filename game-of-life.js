@@ -1,8 +1,8 @@
 class Cell {
-  tableCell;
-  neighbours;
-  isAlive;
-  nextIsAlive;
+  tableCell; // table cell `td`
+  neighbours; // array of table cells
+  isAlive; // boolean
+  nextIsAlive; // boolean
 
   constructor(tableCell, isAlive) {
     this.tableCell = tableCell;
@@ -10,51 +10,43 @@ class Cell {
   }
 
   updateNextIsAlive() {
-    const aliveNeighbours = this.neighbours.filter((neighbour) => neighbour.isAlive).length;
-    if (!this.isAlive && aliveNeighbours === 3) {
-      this.nextIsAlive = true;
-    } else if (this.isAlive && aliveNeighbours < 2) {
-      this.nextIsAlive = false;
-    } else if (this.isAlive && (aliveNeighbours === 2 || aliveNeighbours === 3)) {
-      this.nextIsAlive = true;
-    } else if (this.isAlive && aliveNeighbours > 3) {
-      this.nextIsAlive = false;
-    }
+    // TODO: implement
+    /*
+     * Rules whether a cell is alive or dead.
+     * 1. If cell is dead and exactly 3 neighbours are alive, this cell will be born.
+     * 2. If cell is alive and less than 2 neighbours are alive, this cell dies.
+     * 3. If cell is alive and exactly 2 or 3 neighbours are alive, this cells stays alive.
+     * 4. If cell is alive and more than 3 neighbours are alive, this cell dies.
+     */
   }
   updateIsAlive() {
-    this.isAlive = this.nextIsAlive;
+    // TODO: implement
   }
 }
 
-const table = document.getElementsByTagName('table')[0];
-const tableRows = table.getElementsByTagName('tr');
+const table = undefined; // TODO: get the table element from html
+const tableRows = undefined; // TODO: get the row elements from the table
 
 const cells = [];
 for (let rowNumber = 0; rowNumber < tableRows.length; rowNumber++) {
   const row = tableRows[rowNumber];
-  const rowCells = row.getElementsByTagName('td');
+  const rowCells = undefined; // TODO: get the table cell elements `td` from the row
 
-  if (cells[rowNumber] === undefined) {
-    cells.push([]);
-  }
+  // TODO: Make each table row a new array in the `cells` array. That means it will be 2 dimensional.
+  // First dimenions has arrays representing a row.
+  // Second level will contain cells.
 
   for (let column = 0; column < rowCells.length; column++) {
-    cells[rowNumber].push(new Cell(rowCells[column], Math.random() > 0.8));
+    // TODO: Per cell (`td`) in the table, create a new `Cell` and add it to the array `cells`.
+    // TODO: Hand in the table cell to the cell constructor.
+    // Give every cell a starting value for `isAlive`. It should be random. Choose a proper likelihood to determine whether a cell is alive or not.
   }
 }
 for (let row = 0; row < cells.length; row++) {
   for (let column = 0; column < cells[row].length; column++) {
-    const neighbours = [
-      cells[row - 1]?.[column - 1],
-      cells[row - 1]?.[column],
-      cells[row - 1]?.[column + 1],
-      cells[row]?.[column - 1],
-      cells[row]?.[column + 1],
-      cells[row + 1]?.[column - 1],
-      cells[row + 1]?.[column],
-      cells[row + 1]?.[column + 1],
-    ].filter((cell) => !!cell);
-
+    // TODO: find the neighbours of the current cell and set the `neighbours` attribute of the cell.
+    // The neighbours will never change.
+    const neighbours = [];
     cells[row][column].neighbours = neighbours;
   }
 }
@@ -65,28 +57,27 @@ setInterval(() => {
 }, 300);
 
 function updateCells() {
-  for (let row = 0; row < cells.length; row++) {
-    for (let column = 0; column < cells[row].length; column++) {
-      cells[row][column].updateNextIsAlive();
-    }
-  }
+  // TODO: Update the cells whether they are alive or not.
+  // Hint: First update `nextIsAlive` and then afterwards update `isAlive`
+  // All cells should update at the same time. If you would update one by one, that would cause side effects.
+  // A cell might die before the next can update itself with the right value.
+  // That's why there are 2 TODOs in this function.
 
   for (let row = 0; row < cells.length; row++) {
     for (let column = 0; column < cells[row].length; column++) {
-      cells[row][column].updateIsAlive();
+      // TODO
     }
   }
+
+  // TODO
 }
 
 function updateCellColors() {
   for (let row = 0; row < cells.length; row++) {
     for (let column = 0; column < cells[row].length; column++) {
       const cell = cells[row][column];
-      if (cell.isAlive) {
-        cell.tableCell.style.backgroundColor = 'black';
-      } else {
-        cell.tableCell.style.backgroundColor = 'white';
-      }
+      // TODO: paint the background of the cell with a color if it `isAlive`.
+      // TODO: paint the background of the cell white if it is dead.
     }
   }
 }
